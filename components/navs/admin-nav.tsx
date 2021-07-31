@@ -65,25 +65,25 @@ export default function AdminNav({ active }: AdminNav) {
         <NavItem
           IconCmp={LocationCityIcon}
           activeCondition={() => active === AdminNavActivePage.CREATE_MAJOR}
-          href="/admin/createMajor"
+          href="/admins/createMajor"
           text="Create a major"
         />
         <NavItem
           IconCmp={GroupAddOutlinedIcon}
           activeCondition={() => active === AdminNavActivePage.CREATE_MAJOR}
-          href="/admin/createStudents"
+          href="/admins/createStudents"
           text="Create student/s"
         />
         <NavItem
           IconCmp={PersonAddOutlinedIcon}
           activeCondition={() => active === AdminNavActivePage.CREATE_MAJOR}
-          href="/admin/createAdmin"
+          href="/admins/createAdmin"
           text="create admin"
         />
         <NavItem
           IconCmp={ExitToAppIcon}
           activeCondition={() => active === AdminNavActivePage.CREATE_MAJOR}
-          href="/admin/createAdmin"
+          href=""
           text="Logout"
           end
         />

@@ -14,3 +14,10 @@ a {
 * {
   box-sizing: border-box;
 }
+
+:root {
+	--nav-bg: #0a0d1c;
+	--nav-bg-sec: #dfdfdf4d;
+	--nav-fg-inactive: #636468;
+	--nav-fg-active: #5275ff;
+}

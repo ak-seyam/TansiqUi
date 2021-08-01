@@ -27,6 +27,7 @@ const CreateNewAdminForm: FC<CreateNewAdminProps> = ({ adminCreator }) => {
     }),
     onSubmit: async (values) => {
       setError("");
+	  setSuccess(false);
       const [err, data] = await adminCreator(values);
       if (err) setError(err);
       setSuccess(data != null);

@@ -67,8 +67,9 @@ export const CreateNewStudentDataForm: FC<CreateNewStudentDataFormProps> = ({
         .required("required"),
     }),
     onSubmit: async (values) => {
+      setSuccess(false);
       //   alert(JSON.stringify(values, null, 2));
-	  setError("")
+      setError("");
       const [err, data] = await studentSubmitter(values);
       if (err) setError(err);
       setSuccess(data != undefined);

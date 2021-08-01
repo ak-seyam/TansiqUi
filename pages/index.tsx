@@ -18,12 +18,12 @@ export default function Home() {
   };
   return (
     <div className={styles.container}>
-      <h1>Welcome to Tansiq 👋</h1>
-      <p>
+      <h1 style={{ margin: "8px", fontSize: "4rem" }}>Welcome to Tansiq 👋</h1>
+      <p style={{ marginBottom: "16px", fontSize: "1.2rem" }}>
         Tansiq is a simple web application that matches students to their
-        desired majors
+        desired majors.
       </p>
-      you can either
+      <span>you can either</span>
       <div style={{ display: "flex", alignItems: "center" }}>
         <Button
           style={{ margin: "16px" }}

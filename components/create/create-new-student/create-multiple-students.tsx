@@ -1,6 +1,7 @@
 import { Button, Card, TextField } from "@material-ui/core";
 import { FC, SyntheticEvent, useState } from "react";
 import { apiInstance } from "../../../services/api-instance";
+import { AxiosError } from "axios";
 
 const CreateBulkStudents: FC = () => {
   const [nameCol, setNameCol] = useState("");
@@ -8,7 +9,11 @@ const CreateBulkStudents: FC = () => {
   const [passwordCol, setPasswordCol] = useState("");
   const [marksCol, setMarksCol] = useState("");
   const [file, setFile] = useState<any>(null);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
   const handleSubmit = async (e: SyntheticEvent) => {
+    setSuccess(false);
+    setError("");
     e.preventDefault();
     const formData = new FormData();
     formData.append("studentNameColumnName", nameCol);
@@ -21,16 +26,20 @@ const CreateBulkStudents: FC = () => {
       alert("file is required");
     }
     try {
-      await apiInstance
+      const data = await apiInstance
         .post("/core/studentFiles", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         })
         .then((res) => res.data);
+      if (data != null) setSuccess(true);
+      setTimeout(() => {
+        setSuccess(false);
+      }, 4000);
     } catch (e) {
+      setError(e.response.message || e.message);
       // todo display it in a nicer way
-      throw e;
     }
   };
   return (
@@ -69,9 +78,9 @@ const CreateBulkStudents: FC = () => {
           name="studentMarkColumnName"
         />
         <input
-		style={{
-			margin:"12px 0px"
-		}}
+          style={{
+            margin: "12px 0px",
+          }}
           onChange={(e) => {
             if (e.target.files !== null) setFile(e.target.files[0]);
           }}
@@ -85,6 +94,8 @@ const CreateBulkStudents: FC = () => {
         <Button type="submit" variant="contained">
           Submit
         </Button>
+        {error}
+        {success ? "Success" : ""}
       </form>
     </Card>
   );

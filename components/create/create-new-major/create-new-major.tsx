@@ -30,7 +30,8 @@ const CreateNewMajor: FC<CreateNewMajorProps> = ({ majorsCreator }) => {
     onSubmit: async (values) => {
       const [error, data] = await majorsCreator(values);
       if (error) setError(error);
-      setSuccess(data !== undefined);
+	  setSuccess(false);
+      setSuccess(data != undefined);
       setTimeout(() => {
         setSuccess(false);
       }, 4000);

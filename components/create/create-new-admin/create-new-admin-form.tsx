@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import AdminData from "../../../models/AdminData";
 import * as Yup from "yup";
 import { Button, TextField, Typography } from "@material-ui/core";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { useFormFieldsStyles } from "../../hooks/form-fields-styles";
 
 export interface CreateNewAdminProps {
@@ -10,6 +10,8 @@ export interface CreateNewAdminProps {
 }
 
 const CreateNewAdminForm: FC<CreateNewAdminProps> = ({ adminCreator }) => {
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
   const classes = useFormFieldsStyles();
   // create form data hook probably
   const formik = useFormik({
@@ -23,9 +25,14 @@ const CreateNewAdminForm: FC<CreateNewAdminProps> = ({ adminCreator }) => {
         .min(8, "password must be greater than 8 numbers")
         .required("Required"),
     }),
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-      adminCreator(values);
+    onSubmit: async (values) => {
+      setError("");
+      const [err, data] = await adminCreator(values);
+      if (err) setError(err);
+      setSuccess(data != null);
+      setInterval(() => {
+        setSuccess(false);
+      }, 4000);
     },
   });
   return (
@@ -52,6 +59,8 @@ const CreateNewAdminForm: FC<CreateNewAdminProps> = ({ adminCreator }) => {
         <Button type="submit" variant="contained">
           Submit
         </Button>
+        {error}
+        {success ? "Success!" : ""}
       </form>
     </>
   );

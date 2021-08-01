@@ -31,6 +31,7 @@ const LoginCard: FC<LoginCardProps> = ({ login }) => {
 	}
 	else if (localStorage.getItem(USER_ROlE_LOCAL_STORAGE_NAME) === "ROLE_STUDENT") {
 		// redirect to student CP
+		router.push("/students")
 	}
   };
   return (

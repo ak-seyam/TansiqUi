@@ -8,6 +8,8 @@ import LocationCityIcon from "@material-ui/icons/LocationCity";
 import GroupAddOutlinedIcon from "@material-ui/icons/GroupAddOutlined";
 import PersonAddOutlinedIcon from "@material-ui/icons/PersonAddOutlined";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import { useRouter } from "next/dist/client/router";
+import { logout } from "../../services/clear-local-storage";
 
 export enum AdminNavActivePage {
   HOME,
@@ -25,7 +27,7 @@ interface NavItemProps {
   IconCmp: OverridableComponent<SvgIconTypeMap<{}, "svg">>;
   activeCondition: () => boolean;
   text: string;
-  end?: boolean;
+  logout?: boolean;
 }
 
 function NavItem({
@@ -33,8 +35,13 @@ function NavItem({
   IconCmp,
   activeCondition,
   text,
-  end = false,
+  logout: end = false,
 }: NavItemProps) {
+  const router = useRouter();
+  const handleLogout = async () => {
+    await logout();
+    router.push("/login");
+  };
   return (
     <li
       className={`${classes["nav-item"]} ${
@@ -42,12 +49,21 @@ function NavItem({
       } ${end ? classes["end-icon"] : ""} 
 	  `}
     >
-      <Link href={href}>
-        <div className={`${classes["icon-container"]} `}>
-          <IconCmp fontSize="inherit" className={classes["icon"]} />
-          <span className={classes["nav-text"]}>{text}</span>
+      {end ? (
+        <div onClick={handleLogout}>
+          <div className={`${classes["icon-container"]} `}>
+            <IconCmp fontSize="inherit" className={classes["icon"]} />
+            <span className={classes["nav-text"]}>{text}</span>
+          </div>
         </div>
-      </Link>
+      ) : (
+        <Link href={href}>
+          <div className={`${classes["icon-container"]} `}>
+            <IconCmp fontSize="inherit" className={classes["icon"]} />
+            <span className={classes["nav-text"]}>{text}</span>
+          </div>
+        </Link>
+      )}
     </li>
   );
 }
@@ -70,13 +86,13 @@ export default function AdminNav({ active }: AdminNav) {
         />
         <NavItem
           IconCmp={GroupAddOutlinedIcon}
-          activeCondition={() => active === AdminNavActivePage.CREATE_MAJOR}
+          activeCondition={() => active === AdminNavActivePage.ADD_STUDENTS}
           href="/admins/createStudents"
           text="Create student/s"
         />
         <NavItem
           IconCmp={PersonAddOutlinedIcon}
-          activeCondition={() => active === AdminNavActivePage.CREATE_MAJOR}
+          activeCondition={() => active === AdminNavActivePage.ADD_ADMIN}
           href="/admins/createAdmin"
           text="create admin"
         />
@@ -85,7 +101,7 @@ export default function AdminNav({ active }: AdminNav) {
           activeCondition={() => active === AdminNavActivePage.CREATE_MAJOR}
           href=""
           text="Logout"
-          end
+          logout
         />
       </ul>
     </nav>

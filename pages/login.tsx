@@ -7,15 +7,17 @@ import useAccountRedirect from "../hooks/use-account-redirect";
 export default function LoginPage() {
   const router = useRouter();
   useAccountRedirect();
-  <div
-    style={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      height: "100vh",
-      backgroundColor: "#dddddd",
-    }}
-  >
-    <LoginCard login={login} />
-  </div>;
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+        backgroundColor: "#dddddd",
+      }}
+    >
+      <LoginCard login={login} />
+    </div>
+  );
 }

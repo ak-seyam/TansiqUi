@@ -4,6 +4,8 @@ import { FC } from "react";
 import MajorData from "../../models/MajorData";
 import MajorsRanks from "../../models/MajorsRanks";
 import { ArrowUpward, ArrowDownward } from "@material-ui/icons";
+import { logout } from "../../services/clear-local-storage";
+import { useRouter } from "next/dist/client/router";
 
 interface CreateRequestProps {
   majorsFetcher: () => Promise<MajorData[]>;
@@ -17,6 +19,8 @@ const CreateRequest: FC<CreateRequestProps> = ({
   studentId,
 }) => {
   const [majors, setMajors] = useState<MajorData[]>([]);
+  const router = useRouter();
+
   useEffect(() => {
     const fetcher = async () => {
       const m = await majorsFetcher();
@@ -30,7 +34,7 @@ const CreateRequest: FC<CreateRequestProps> = ({
     requestCreate(
       studentId,
       majors.map((m, idx) => {
-        return { majorId: m.id, rank: idx + 1 };
+        return { majorId: m.id!, rank: idx + 1 };
       })
     );
   };
@@ -47,7 +51,6 @@ const CreateRequest: FC<CreateRequestProps> = ({
         const majorsClone = [...majors];
         // swap the index with above if index != 0
         swap(majorsClone, index, index - 1);
-        console.log(majorsClone);
         setMajors(majorsClone);
       }
     };
@@ -63,6 +66,10 @@ const CreateRequest: FC<CreateRequestProps> = ({
       }
     };
   };
+  const logoutHandler = async () => {
+	   await logout()
+	   router.push("/login")
+  }
   return (
     <>
       <div>
@@ -86,13 +93,23 @@ const CreateRequest: FC<CreateRequestProps> = ({
             </div>
           );
         })}
-        <Button
-          onClick={handleSubmit}
-          style={{ margin: "8px" }}
-          variant="contained"
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+          }}
         >
-          Submit
-        </Button>
+          <Button
+            onClick={handleSubmit}
+            style={{ margin: "8px" }}
+            variant="contained"
+          >
+            Submit
+          </Button>
+		  <Button onClick={logoutHandler}>
+		  	Logout
+		  </Button>
+        </div>
       </div>
     </>
   );

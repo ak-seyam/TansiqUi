@@ -5,6 +5,7 @@ import {
   CreateNewStudentDataFormProps,
 } from "./create-new-student-form";
 
+
 export const CreateSingleNewStudent: FC<CreateNewStudentDataFormProps> = (
   props
 ) => {

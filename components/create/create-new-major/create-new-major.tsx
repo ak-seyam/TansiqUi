@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import { FC } from "react";
+import { FC, useState } from "react";
 import MajorData from "../../../models/MajorData";
 import * as Yup from "yup";
 import { Button, Card, CardContent, Typography } from "@material-ui/core";
@@ -11,6 +11,8 @@ interface CreateNewMajorProps {
 }
 
 const CreateNewMajor: FC<CreateNewMajorProps> = ({ majorsCreator }) => {
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
   const classes = useFormFieldsStyles();
   const formik = useFormik({
     initialValues: {
@@ -26,7 +28,12 @@ const CreateNewMajor: FC<CreateNewMajorProps> = ({ majorsCreator }) => {
         .min(1, "major should have at least more student"),
     }),
     onSubmit: async (values) => {
-      await majorsCreator(values);
+      const [error, data] = await majorsCreator(values);
+      if (error) setError(error);
+      setSuccess(data !== undefined);
+      setTimeout(() => {
+        setSuccess(false);
+      }, 4000);
     },
   });
   return (
@@ -35,13 +42,17 @@ const CreateNewMajor: FC<CreateNewMajorProps> = ({ majorsCreator }) => {
         width: "400px",
       }}
     >
-      <Typography align="center">Create new major</Typography>
+      <Typography align="center" style={{ marginTop: "24px" }}>
+        Create new major
+      </Typography>
       <CardContent>
         <form onSubmit={formik.handleSubmit} className={classes.root}>
           <TextInputField fieldName="name" formik={formik} />
-          <TextInputField fieldName="limit" formik={formik} />
-          <Button type="submit">Submit</Button>
+          <TextInputField type="number" fieldName="limit" formik={formik} />
+          <Button variant="contained" type="submit">Submit</Button>
         </form>
+        {error}
+        {success ? "Success!" : ""}
       </CardContent>
     </Card>
   );

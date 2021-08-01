@@ -40,3 +40,7 @@ export async function createRequest(studentId: string, ranks: MajorsRanks[]) {
     majors: ranks,
   });
 }
+
+export async function createTansiq() {
+  return createResource("/core/admins/tansiq", {});
+}
